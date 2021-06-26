@@ -1,7 +1,15 @@
 import {takeEvery, takeLatest} from "@redux-saga/core/effects";
 import {PayloadAction} from "@reduxjs/toolkit";
-import { delay, put } from "redux-saga/effects";
+import {call, delay, put } from "redux-saga/effects";
 import {increment, incrementSaga, incrementSagaSuccess} from "./counterSlice";
+import {fetchCount} from "./counterAPI";
+
+function* test() {
+    //cach 1
+    yield fetchCount(2);
+    //cach 2
+    yield call(fetchCount,2)
+}
 
 //moi lan toi thay 1 action dispatch thi toi se hanh dong log no ra
 //moi lan log se nhan dc cai action chinh la payload action
