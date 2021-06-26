@@ -1,11 +1,20 @@
-import {takeEvery} from "@redux-saga/core/effects";
+import {takeEvery, takeLatest} from "@redux-saga/core/effects";
 import {PayloadAction} from "@reduxjs/toolkit";
-import {increment} from "./counterSlice";
+import { delay, put } from "redux-saga/effects";
+import {increment, incrementSaga, incrementSagaSuccess} from "./counterSlice";
 
 //moi lan toi thay 1 action dispatch thi toi se hanh dong log no ra
 //moi lan log se nhan dc cai action chinh la payload action
-export function* log(action: PayloadAction) {
-    console.log("log", action);
+// export function* log(action: PayloadAction) {
+//     console.log("log", action);
+// }
+function* handleIncrementSaga(action: PayloadAction<number>) {
+    console.log("Waiting 2s");//kiem tra xem no co vao dc function nay ko ?
+    //wait 2s
+    yield delay(2000);
+    console.log("Waiting done, dispatch action");
+    //dispatch action success
+    yield put(incrementSagaSuccess(action.payload));
 }
 
 export default function* counterSaga() {
@@ -14,5 +23,7 @@ export default function* counterSaga() {
     //log theo ham log above
     // yield takeEvery("counter/increment",log);
     //thay cho hardcode hoi nay
-    yield takeEvery(increment().type,log);
+    // yield takeEvery(increment().type,log);
+    //yield takeEvery(incrementSaga.toString(), handleIncrementSaga);
+    yield takeLatest(incrementSaga.toString(), handleIncrementSaga);
 }
